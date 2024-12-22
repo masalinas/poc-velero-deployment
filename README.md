@@ -1,8 +1,45 @@
-- **STEP**: install velero client
+# Descripion
+Install velero, minio and make a simple backup
 
-- **STEP**: install velero server
+## Steps
 
-Execute this command, by default velero will be installed in the velero namespace of the cluster
+- **STEP01**: install minio
+
+Register the minio operator repository
+```
+$ helm repo add minio-operator https://operator.min.io
+```
+
+Install the minio operator version 5.x because from 6.x the minio console was deprecated
+```
+$ helm install \
+  --namespace minio-operator \
+  --create-namespace \
+  operator minio-operator/operator --version 5.0.15
+```
+
+- **STEP02**: deploy a minio tenant called sample from minio console where velero will save the backups inside a bucket
+First create a port forward to connect to minio console. Login using the security Token from Secrets > console-sa-secret > token
+
+eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5Kb1kzQ1hpQXBVWTN1ckU3Q0toUTJzMDJwS2o0RXAwT29sa3NNRUk5YVkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJtaW5pby1vcGVyYXRvciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJjb25zb2xlLXNhLXNlY3JldCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJjb25zb2xlLXNhIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMWU2YjQ1NjAtMjhiNi00OTE4LTg3MWUtMDg1MjBiY2FiM2FlIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Om1pbmlvLW9wZXJhdG9yOmNvbnNvbGUtc2EifQ.f5412dPMsewEd7AWfzqPNqthIr04pM0OlK7i6olRMRDR7pCFgKPhff0CoshqKjLFs_mI4OPS0tKUjZ5yFfQAbFB6Jm_N_uCDiFuiztXx4fO-g0iVrttteOyHA4tR4ZVhSros4uz8JhffKSbGbFU0pHSfnvZMYc79KCsgpmpIp4Y9hqmRI9TzXisDSnednmDD7zueXXVT0ThMGoT8x1cmwdwwbbgwtFZgHekxYIBQ7-xbGZcRBTuE1EDrHQdApfeHajit66godMXKD3MTP_7YRtEfeBBNtuPWYafGAAHXhmAkZDwyESXwNNmETH0qoskXdICsjojCdMrpShQgDIjDRg
+
+
+```
+kubectl port-forward -n minio-operator svc/console 9090:9090
+```
+
+![Mimio tenant](./images/minio_tenant.png "Mimio tenant")
+
+- **STEP03**: install velero client
+Install velero CLI 1.15.0 for arm in my case 
+
+curl https://github.com/vmware-tanzu/velero/releases/download/v1.15.0/velero-v1.15.0-linux-arm64.tar.gz
+
+set executable and move to /urs/local/bin
+
+- **STEP04**: install velero controller inside kubernetes
+
+Execute this command, by default velero will be installed in the velero namespace of the cluster. Use the aws plugin compatible with your velero CLI (1.15.0)
 
 ```
 $ velero install \
@@ -610,6 +647,12 @@ time="2024-12-22T19:34:09Z" level=info msg="plugin process exited" backupLocatio
 time="2024-12-22T19:34:09Z" level=info msg="plugin process exited" backup-storage-location=velero/default cmd=/plugins/velero-plugin-for-aws controller=backup-storage-location id=217 logSource="pkg/plugin/clientmgmt/process/logrus_adapter.go:80" plugin=/plugins/velero-plugin-for-aws
 ```
 
+Check to see that the Velero is successfully created:
+
+```
+$ kubectl get deployments -l component=velero --namespace=velero
+```
+
 uninstall velero:
 
 ```
@@ -624,5 +667,41 @@ Velero namespace "velero" deleted
 Velero uninstalled ⛵
 ```
 
+- **STEP06**: deploy an example nginx to be backup
 
-https://github.com/vmware-tanzu/velero-plugin-for-aws#compatibility
+Deploy the example nginx application:
+
+```
+$ kubectl apply -f examples/nginx-app/base.yaml
+```
+
+Check to see that nginx deployments is successfully created:
+
+```
+$ kubectl get deployments --namespace=nginx-example
+```
+
+- **STEP07**: make a backup of nginx resource
+Backup the kubernetes resource with the app=nginx
+```
+velero backup create nginx-backup --selector app=nginx
+```
+
+```
+velero backup logs nginx-backup --insecure-skip-tls-verify
+```
+
+The backup created inside minio velero bucket
+![Mimio tenant](./images/minio_tenant.png "Mimio tenant")
+
+## Some links:
+
+- https://github.com/minio/operator/releases
+
+- https://velero.io/docs/v1.3.0/basic-install
+
+- https://github.com/vmware-tanzu/velero/releases/tag/v1.15.0
+
+- https://github.com/vmware-tanzu/velero-plugin-for-aws#compatibility
+
+- https://velero.io/docs/v1.3.0/velero-install/
