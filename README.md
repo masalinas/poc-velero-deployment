@@ -110,6 +110,8 @@ Deployment/velero: created
 Velero is installed! ⛵ Use 'kubectl logs deployment/velero -n velero' to view the status.
 ```
 
+![Mimio controller](./images/velero_controller.png "Velero controller")
+
 ```
 $ kubectl logs deployment/velero -n velero
 Defaulted container "velero" out of: velero, velero-velero-plugin-for-aws (init)
@@ -653,20 +655,6 @@ Check to see that the Velero is successfully created:
 $ kubectl get deployments -l component=velero --namespace=velero
 ```
 
-uninstall velero:
-
-```
-$ velero uninstall
-You are about to uninstall Velero.
-Are you sure you want to continue (Y/N)? Y
-Waiting for resource with attached finalizer to be deleted
-
-Waiting for velero namespace "velero" to be deleted
-............................................................
-Velero namespace "velero" deleted
-Velero uninstalled ⛵
-```
-
 - **STEP06**: deploy an example nginx to be backup
 
 Deploy the example nginx application:
@@ -687,6 +675,7 @@ Backup the kubernetes resource with the app=nginx
 velero backup create nginx-backup --selector app=nginx
 ```
 
+To check the backup logs
 ```
 velero backup logs nginx-backup --insecure-skip-tls-verify
 ```
@@ -694,7 +683,35 @@ velero backup logs nginx-backup --insecure-skip-tls-verify
 The backup created inside minio velero bucket
 ![Mimio tenant](./images/minio_tenant.png "Mimio tenant")
 
+- **STEP07**: simulate remove the nginx resources
+```
+$ kubectl delete namespace nginx-example
+```
+- **STEP07**: restore the nginx backup
+```
+$ velero restore create --from-backup nginx-backup
+```
+
+![Mimio restore](./images/velero_restore.png "Velero restore")
+
+- **STEP08**: uninstall velero:
+
+By default velero will uninstalle the velero namespace controller just installed
+```
+$ velero uninstall
+You are about to uninstall Velero.
+Are you sure you want to continue (Y/N)? Y
+Waiting for resource with attached finalizer to be deleted
+
+Waiting for velero namespace "velero" to be deleted
+............................................................
+Velero namespace "velero" deleted
+Velero uninstalled ⛵
+```
+
 ## Some links:
+
+- https://min.io/docs/minio/kubernetes/upstream/operations/install-deploy-manage/deploy-operator-helm.html
 
 - https://github.com/minio/operator/releases
 
@@ -705,3 +722,5 @@ The backup created inside minio velero bucket
 - https://github.com/vmware-tanzu/velero-plugin-for-aws#compatibility
 
 - https://velero.io/docs/v1.3.0/velero-install/
+
+- https://velero.io/docs/v1.10/self-signed-certificates/
