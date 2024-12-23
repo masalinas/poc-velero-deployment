@@ -1,5 +1,5 @@
 # Descripion
-Install velero, minio and make a simple backup
+Install velero, minio to save backups and make a simple backup to check it
 
 ## Steps
 
