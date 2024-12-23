@@ -18,7 +18,7 @@ $ helm install \
   operator minio-operator/operator --version 5.0.15
 ```
 
-- **STEP02**: deploy a minio tenant called **sample** from minio console where velero will save the backups inside a bucket called **velero**
+- **STEP02**: deploy a minio tenant called **sample** from minio console with minimun resources where velero will save the backups inside a bucket called **velero**
  
 First create a port forward to connect to minio console.
 
