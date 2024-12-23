@@ -35,7 +35,8 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5Kb1kzQ1hpQXBVWTN1ckU3Q0toUTJzMDJwS2o0RXAwT29sa3NN
 ![Mimio tenant](./images/minio_tenant.png "Mimio tenant")
 
 - **STEP03**: install velero client
-Install velero CLI 1.15.0 for arm in my case 
+
+Install the last velero CLI 1.15.0 for arm64 in my case 
 
 curl https://github.com/vmware-tanzu/velero/releases/download/v1.15.0/velero-v1.15.0-linux-arm64.tar.gz
 
@@ -43,7 +44,7 @@ set executable and move to /urs/local/bin
 
 - **STEP04**: install velero controller inside kubernetes
 
-Execute this command, by default velero will be installed in the velero namespace of the cluster. Use the aws plugin compatible with your velero CLI (1.15.0)
+Execute this command, by default velero server (controller) will be installed in the velero namespace of the cluster. Use the aws plugin compatible with your velero CLI (1.15.0) in  my case v1.11.0
 
 ```
 $ velero install \
@@ -116,6 +117,7 @@ Velero is installed! ⛵ Use 'kubectl logs deployment/velero -n velero' to view 
 
 ![Mimio controller](./images/velero_controller.png "Velero controller")
 
+You can see the velero deployment logs like this:
 ```
 $ kubectl logs deployment/velero -n velero
 Defaulted container "velero" out of: velero, velero-velero-plugin-for-aws (init)
@@ -659,7 +661,7 @@ Check to see that the Velero is successfully created:
 $ kubectl get deployments -l component=velero --namespace=velero
 ```
 
-- **STEP06**: deploy an example nginx to be backup
+- **STEP06**: deploy an example nginx to backup
 
 Deploy the example nginx application:
 
@@ -673,7 +675,7 @@ Check to see that nginx deployments is successfully created:
 $ kubectl get deployments --namespace=nginx-example
 ```
 
-- **STEP07**: make a backup of nginx resource
+- **STEP07**: make a backup of nginx resource deployed
 Backup the kubernetes resource with the app=nginx
 ```
 velero backup create nginx-backup --selector app=nginx
@@ -685,22 +687,23 @@ velero backup logs nginx-backup --insecure-skip-tls-verify
 ```
 
 The backup created inside minio velero bucket
-![Mimio tenant](./images/minio_tenant.png "Mimio tenant")
+![Velero backup object](./images/velero_backup.png "Velero backup object")
 
-- **STEP07**: simulate remove the nginx resources
+- **STEP07**: simulate remove the nginx resources to be restored later from velero
 ```
 $ kubectl delete namespace nginx-example
 ```
+
 - **STEP07**: restore the nginx backup
 ```
 $ velero restore create --from-backup nginx-backup
 ```
 
-![Mimio restore](./images/velero_restore.png "Velero restore")
+![Velero restore object](./images/velero_restore.png "Velero restore object")
 
 - **STEP08**: uninstall velero:
-
 By default velero will uninstalle the velero namespace controller just installed
+
 ```
 $ velero uninstall
 You are about to uninstall Velero.
