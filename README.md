@@ -45,6 +45,7 @@ set executable and move to /urs/local/bin
 - **STEP04**: install velero controller inside kubernetes
 
 Execute this command, by default velero server (controller) will be installed in the velero namespace of the cluster. Use the aws plugin compatible with your velero CLI (1.15.0) in  my case v1.11.0
+**Note**: the s3Url attribute is configured using the minio tenant located in default namespace, in the previous captures where define the configuration of this tenant is using velero namespace not default namespace.
 
 ```
 $ velero install \
