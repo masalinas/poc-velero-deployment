@@ -1036,19 +1036,19 @@ time="2024-12-26T13:40:41Z" level=info msg="Backed up a total of 8 items" backup
 The backup created inside minio velero bucket
 ![Velero backup object](./images/velero_backup.png "Velero backup object")
 
-- **STEP07**: simulate remove the nginx resources to be restored later from velero
+- **STEP09**: simulate remove the nginx resources to be restored later from velero
 ```
 $ kubectl delete namespace nginx-example
 ```
 
-- **STEP07**: restore the nginx backup
+- **STEP10**: restore the nginx backup
 ```
 $ velero restore create --from-backup nginx-backup
 ```
 
 ![Velero restore object](./images/velero_restore.png "Velero restore object")
 
-- **STEP08**: uninstall velero:
+- **STEP11**: uninstall velero:
 By default velero will uninstalle the velero namespace controller just installed
 
 ```
