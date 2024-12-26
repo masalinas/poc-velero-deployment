@@ -662,7 +662,7 @@ Check to see that the Velero is successfully created:
 $ kubectl get deployments -l component=velero --namespace=velero
 ```
 
-- **STEP06**: deploy an example nginx to backup
+- **STEP05**: deploy an example nginx to backup
 
 Deploy the example nginx application:
 
@@ -676,13 +676,13 @@ Check to see that nginx deployments is successfully created:
 $ kubectl get deployments --namespace=nginx-example
 ```
 
-- **STEP07**: make a backup of nginx resource deployed
+- **STEP06**: make a backup of nginx resource deployed
 Backup the kubernetes resource with the app=nginx
 ```
 velero backup create nginx-backup --selector app=nginx
 ```
 
-- **STEP08**: Check the backup logs
+- **STEP07**: Check the backup logs
 Previous to get the logs of the backup we must to create a static dns resolution in /etc/hosts like this to have access to velero minio tenant where the backups are created:
 ```
 127.0.0.1 sample-hl.default.svc
@@ -1036,19 +1036,19 @@ time="2024-12-26T13:40:41Z" level=info msg="Backed up a total of 8 items" backup
 The backup created inside minio velero bucket
 ![Velero backup object](./images/velero_backup.png "Velero backup object")
 
-- **STEP09**: simulate remove the nginx resources to be restored later from velero
+- **STEP08**: simulate remove the nginx resources to be restored later from velero
 ```
 $ kubectl delete namespace nginx-example
 ```
 
-- **STEP10**: restore the nginx backup
+- **STEP09**: restore the nginx backup
 ```
 $ velero restore create --from-backup nginx-backup
 ```
 
 ![Velero restore object](./images/velero_restore.png "Velero restore object")
 
-- **STEP11**: uninstall velero:
+- **STEP10**: uninstall velero:
 By default velero will uninstalle the velero namespace controller just installed
 
 ```
