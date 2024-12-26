@@ -682,9 +682,355 @@ Backup the kubernetes resource with the app=nginx
 velero backup create nginx-backup --selector app=nginx
 ```
 
-To check the backup logs
+- **STEP08**: Check the backup logs
+Previous to get the logs of the backup we must to create a static dns resolution in /etc/hosts like this to have access to velero minio tenant where the backups are created:
 ```
-velero backup logs nginx-backup --insecure-skip-tls-verify
+127.0.0.1 sample-hl.default.svc
+```
+
+Now execute the command to recover the logs with --insecure-skip-tls-verify flag to skip verify TLS certificate sign:
+```
+$ velero backup logs nginx-backup --insecure-skip-tls-verify
+time="2024-12-26T13:40:40Z" level=info msg="Setting up backup temp file" backup=velero/nginx-backup logSource="pkg/controller/backup_controller.go:616"
+time="2024-12-26T13:40:40Z" level=info msg="Setting up plugin manager" backup=velero/nginx-backup logSource="pkg/controller/backup_controller.go:623"
+time="2024-12-26T13:40:40Z" level=info msg="Getting backup item actions" backup=velero/nginx-backup logSource="pkg/controller/backup_controller.go:627"
+time="2024-12-26T13:40:41Z" level=info msg="Getting ItemBlock actions" backup=velero/nginx-backup logSource="pkg/controller/backup_controller.go:632"
+time="2024-12-26T13:40:41Z" level=info msg="Setting up backup store to check for backup existence" backup=velero/nginx-backup logSource="pkg/controller/backup_controller.go:637"
+time="2024-12-26T13:40:41Z" level=info msg="Writing backup version file" backup=velero/nginx-backup logSource="pkg/backup/backup.go:238"
+time="2024-12-26T13:40:41Z" level=info msg="Including namespaces: *" backup=velero/nginx-backup logSource="pkg/backup/backup.go:244"
+time="2024-12-26T13:40:41Z" level=info msg="Excluding namespaces: <none>" backup=velero/nginx-backup logSource="pkg/backup/backup.go:245"
+time="2024-12-26T13:40:41Z" level=info msg="Including resources: *" backup=velero/nginx-backup logSource="pkg/util/collections/includes_excludes.go:506"
+time="2024-12-26T13:40:41Z" level=info msg="Excluding resources: <none>" backup=velero/nginx-backup logSource="pkg/util/collections/includes_excludes.go:507"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up all volumes using pod volume backup: false" backup=velero/nginx-backup logSource="pkg/backup/backup.go:263"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource pods was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 2 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=persistentvolumeclaims
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=persistentvolumeclaims
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource persistentvolumeclaims was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=persistentvolumeclaims
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=persistentvolumes
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=persistentvolumes
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource persistentvolumes was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=persistentvolumes
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=serviceaccounts
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=serviceaccounts
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource serviceaccounts was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=serviceaccounts
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=services
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=services
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource services was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 1 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=services
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=replicationcontrollers
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=replicationcontrollers
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource replicationcontrollers was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=replicationcontrollers
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=configmaps
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=configmaps
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource configmaps was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=configmaps
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=limitranges
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=limitranges
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource limitranges was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=limitranges
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=resourcequotas
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=resourcequotas
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource resourcequotas was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=resourcequotas
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=podtemplates
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=podtemplates
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource podtemplates was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=podtemplates
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=nodes
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=nodes
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource nodes was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=nodes
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=secrets
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=secrets
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource secrets was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=secrets
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=namespaces
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=events
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=events
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource events was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=events
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:349" resource=endpoints
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=endpoints
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource endpoints was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 1 items" backup=velero/nginx-backup group=v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=endpoints
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=apiregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apiregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=apiservices
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apiregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=apiservices
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource apiservices.apiregistration.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=apiregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=apiservices
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:349" resource=daemonsets
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=daemonsets
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource daemonsets.apps was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=daemonsets
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:349" resource=controllerrevisions
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=controllerrevisions
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource controllerrevisions.apps was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=controllerrevisions
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:349" resource=replicasets
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=replicasets
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource replicasets.apps was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 1 items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=replicasets
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:349" resource=deployments
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=deployments
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource deployments.apps was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 1 items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=deployments
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:349" resource=statefulsets
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=statefulsets
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource statefulsets.apps was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=apps/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=statefulsets
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=events.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=events.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=events
+time="2024-12-26T13:40:41Z" level=info msg="Skipping resource because it cohabitates and we've already processed it" backup=velero/nginx-backup cohabitatingResource1=events cohabitatingResource2=events.events.k8s.io group=events.k8s.io/v1 logSource="pkg/backup/item_collector.go:428" resource=events
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=autoscaling/v2 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=autoscaling/v2 logSource="pkg/backup/item_collector.go:349" resource=horizontalpodautoscalers
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=autoscaling/v2 logSource="pkg/backup/item_collector.go:522" namespace= resource=horizontalpodautoscalers
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource horizontalpodautoscalers.autoscaling was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=autoscaling/v2 logSource="pkg/backup/item_collector.go:558" namespace= resource=horizontalpodautoscalers
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:349" resource=jobs
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=jobs
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource jobs.batch was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=jobs
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:349" resource=cronjobs
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=cronjobs
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource cronjobs.batch was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=batch/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=cronjobs
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=certificates.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=certificates.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=certificatesigningrequests
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=certificates.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=certificatesigningrequests
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource certificatesigningrequests.certificates.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=certificates.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=certificatesigningrequests
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=networkpolicies
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=networkpolicies
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource networkpolicies.networking.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=networkpolicies
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=ingresses
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=ingresses
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource ingresses.networking.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=ingresses
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=ingressclasses
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=ingressclasses
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource ingressclasses.networking.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=networking.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=ingressclasses
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=policy/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=policy/v1 logSource="pkg/backup/item_collector.go:349" resource=poddisruptionbudgets
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=policy/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=poddisruptionbudgets
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource poddisruptionbudgets.policy was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=policy/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=poddisruptionbudgets
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=rolebindings
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=rolebindings
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource rolebindings.rbac.authorization.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=rolebindings
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=roles
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=roles
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource roles.rbac.authorization.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=roles
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=clusterrolebindings
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=clusterrolebindings
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource clusterrolebindings.rbac.authorization.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=clusterrolebindings
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=clusterroles
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=clusterroles
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource clusterroles.rbac.authorization.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=rbac.authorization.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=clusterroles
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=csinodes
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=csinodes
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource csinodes.storage.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=csinodes
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=csistoragecapacities
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=csistoragecapacities
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource csistoragecapacities.storage.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=csistoragecapacities
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=storageclasses
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=storageclasses
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource storageclasses.storage.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=storageclasses
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=volumeattachments
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=volumeattachments
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource volumeattachments.storage.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=volumeattachments
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=csidrivers
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=csidrivers
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource csidrivers.storage.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=storage.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=csidrivers
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=mutatingwebhookconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=mutatingwebhookconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource mutatingwebhookconfigurations.admissionregistration.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=mutatingwebhookconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=validatingwebhookconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=validatingwebhookconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource validatingwebhookconfigurations.admissionregistration.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=admissionregistration.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=validatingwebhookconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=apiextensions.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=apiextensions.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=customresourcedefinitions
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=apiextensions.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=customresourcedefinitions
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource customresourcedefinitions.apiextensions.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=apiextensions.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=customresourcedefinitions
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=scheduling.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=scheduling.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=priorityclasses
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=scheduling.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=priorityclasses
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource priorityclasses.scheduling.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=scheduling.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=priorityclasses
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=coordination.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=coordination.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=leases
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=coordination.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=leases
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource leases.coordination.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=coordination.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=leases
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=node.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=node.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=runtimeclasses
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=node.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=runtimeclasses
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource runtimeclasses.node.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=node.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=runtimeclasses
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=discovery.k8s.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=discovery.k8s.io/v1 logSource="pkg/backup/item_collector.go:349" resource=endpointslices
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=discovery.k8s.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=endpointslices
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource endpointslices.discovery.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 1 items" backup=velero/nginx-backup group=discovery.k8s.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=endpointslices
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:349" resource=flowschemas
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:522" namespace= resource=flowschemas
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource flowschemas.flowcontrol.apiserver.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:558" namespace= resource=flowschemas
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:349" resource=prioritylevelconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:522" namespace= resource=prioritylevelconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource prioritylevelconfigurations.flowcontrol.apiserver.k8s.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=flowcontrol.apiserver.k8s.io/v1beta3 logSource="pkg/backup/item_collector.go:558" namespace= resource=prioritylevelconfigurations
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=job.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=job.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:349" resource=miniojobs
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=job.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:522" namespace= resource=miniojobs
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource miniojobs.job.min.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=job.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:558" namespace= resource=miniojobs
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=minio.min.io/v2 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=minio.min.io/v2 logSource="pkg/backup/item_collector.go:349" resource=tenants
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=minio.min.io/v2 logSource="pkg/backup/item_collector.go:522" namespace= resource=tenants
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource tenants.minio.min.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=minio.min.io/v2 logSource="pkg/backup/item_collector.go:558" namespace= resource=tenants
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=sts.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=sts.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:349" resource=policybindings
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=sts.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:522" namespace= resource=policybindings
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource policybindings.sts.min.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=sts.min.io/v1alpha1 logSource="pkg/backup/item_collector.go:558" namespace= resource=policybindings
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=downloadrequests
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=downloadrequests
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource downloadrequests.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=downloadrequests
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=podvolumerestores
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=podvolumerestores
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource podvolumerestores.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=podvolumerestores
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=restores
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=restores
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource restores.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=restores
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=podvolumebackups
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=podvolumebackups
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource podvolumebackups.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=podvolumebackups
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=volumesnapshotlocations
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=volumesnapshotlocations
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource volumesnapshotlocations.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=volumesnapshotlocations
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=backuprepositories
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=backuprepositories
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource backuprepositories.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=backuprepositories
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=backupstoragelocations
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=backupstoragelocations
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource backupstoragelocations.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=backupstoragelocations
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=schedules
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=schedules
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource schedules.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=schedules
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=deletebackuprequests
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=deletebackuprequests
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource deletebackuprequests.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=deletebackuprequests
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=backups
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=backups
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource backups.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=backups
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:349" resource=serverstatusrequests
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:522" namespace= resource=serverstatusrequests
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource serverstatusrequests.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v1 logSource="pkg/backup/item_collector.go:558" namespace= resource=serverstatusrequests
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for group" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:242"
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:349" resource=datauploads
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:522" namespace= resource=datauploads
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource datauploads.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:558" namespace= resource=datauploads
+time="2024-12-26T13:40:41Z" level=info msg="Getting items for resource" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:349" resource=datadownloads
+time="2024-12-26T13:40:41Z" level=info msg="Listing items" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:522" namespace= resource=datadownloads
+time="2024-12-26T13:40:41Z" level=info msg="list for groupResource datadownloads.velero.io was not paginated" backup=velero/nginx-backup logSource="pkg/backup/item_collector.go:680"
+time="2024-12-26T13:40:41Z" level=info msg="Retrieved 0 items" backup=velero/nginx-backup group=velero.io/v2alpha1 logSource="pkg/backup/item_collector.go:558" namespace= resource=datadownloads
+time="2024-12-26T13:40:41Z" level=info msg="Collected 8 items matching the backup spec from the Kubernetes API (actual number of items backed up may be more or less depending on velero.io/exclude-from-backup annotation, plugins returning additional related items to back up, etc.)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:327" progress=
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=nginx-deployment-7bf49c58df-n8nvn namespace=nginx-example progress= resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="adding pods nginx-example/nginx-deployment-7bf49c58df-n8nvn to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Executing ItemBlock action" backup=velero/nginx-backup logSource="pkg/backup/backup.go:568"
+time="2024-12-26T13:40:41Z" level=info msg="Executing pod ItemBlockAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/itemblock/actions/pod_action.go:51" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Done executing pod ItemBlockAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/itemblock/actions/pod_action.go:58" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including pods nginx-example/nginx-deployment-7bf49c58df-n8nvn (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=nginx-deployment-7bf49c58df-n8nvn namespace=nginx-example resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Executing custom action" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:357" name=nginx-deployment-7bf49c58df-n8nvn namespace=nginx-example resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Executing podAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/backup/actions/pod_action.go:51" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Done executing podAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/backup/actions/pod_action.go:58" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 1 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=nginx-deployment-7bf49c58df-n8nvn namespace=nginx-example progress= resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=nginx-deployment-7bf49c58df-q2qzf namespace=nginx-example progress= resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="adding pods nginx-example/nginx-deployment-7bf49c58df-q2qzf to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Executing ItemBlock action" backup=velero/nginx-backup logSource="pkg/backup/backup.go:568"
+time="2024-12-26T13:40:41Z" level=info msg="Executing pod ItemBlockAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/itemblock/actions/pod_action.go:51" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Done executing pod ItemBlockAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/itemblock/actions/pod_action.go:58" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including pods nginx-example/nginx-deployment-7bf49c58df-q2qzf (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=nginx-deployment-7bf49c58df-q2qzf namespace=nginx-example resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Executing custom action" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:357" name=nginx-deployment-7bf49c58df-q2qzf namespace=nginx-example resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Executing podAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/backup/actions/pod_action.go:51" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Done executing podAction" backup=velero/nginx-backup cmd=/velero logSource="pkg/backup/actions/pod_action.go:58" pluginName=velero
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 2 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=nginx-deployment-7bf49c58df-q2qzf namespace=nginx-example progress= resource=pods
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=my-nginx namespace=nginx-example progress= resource=services
+time="2024-12-26T13:40:41Z" level=info msg="adding services nginx-example/my-nginx to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including services nginx-example/my-nginx (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=my-nginx namespace=nginx-example resource=services
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 3 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=my-nginx namespace=nginx-example progress= resource=services
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=nginx-example namespace= progress= resource=namespaces
+time="2024-12-26T13:40:41Z" level=info msg="adding namespaces /nginx-example to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including namespaces /nginx-example (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=nginx-example namespace= resource=namespaces
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 4 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=nginx-example namespace= progress= resource=namespaces
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=my-nginx namespace=nginx-example progress= resource=endpoints
+time="2024-12-26T13:40:41Z" level=info msg="adding endpoints nginx-example/my-nginx to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including endpoints nginx-example/my-nginx (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=my-nginx namespace=nginx-example resource=endpoints
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 5 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=my-nginx namespace=nginx-example progress= resource=endpoints
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=nginx-deployment-7bf49c58df namespace=nginx-example progress= resource=replicasets.apps
+time="2024-12-26T13:40:41Z" level=info msg="adding replicasets.apps nginx-example/nginx-deployment-7bf49c58df to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including replicasets.apps nginx-example/nginx-deployment-7bf49c58df (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=nginx-deployment-7bf49c58df namespace=nginx-example resource=replicasets.apps
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 6 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=nginx-deployment-7bf49c58df namespace=nginx-example progress= resource=replicasets.apps
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=nginx-deployment namespace=nginx-example progress= resource=deployments.apps
+time="2024-12-26T13:40:41Z" level=info msg="adding deployments.apps nginx-example/nginx-deployment to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including deployments.apps nginx-example/nginx-deployment (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=nginx-deployment namespace=nginx-example resource=deployments.apps
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 7 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=nginx-deployment namespace=nginx-example progress= resource=deployments.apps
+time="2024-12-26T13:40:41Z" level=info msg="Processing item" backup=velero/nginx-backup logSource="pkg/backup/backup.go:439" name=my-nginx-sj4h5 namespace=nginx-example progress= resource=endpointslices.discovery.k8s.io
+time="2024-12-26T13:40:41Z" level=info msg="adding endpointslices.discovery.k8s.io nginx-example/my-nginx-sj4h5 to ItemBlock" backup=velero/nginx-backup logSource="pkg/backup/itemblock.go:63"
+time="2024-12-26T13:40:41Z" level=info msg="Backing Up Item Block including endpointslices.discovery.k8s.io nginx-example/my-nginx-sj4h5 (1 items in block)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:476"
+time="2024-12-26T13:40:41Z" level=info msg="Backing up item" backup=velero/nginx-backup logSource="pkg/backup/item_backupper.go:184" name=my-nginx-sj4h5 namespace=nginx-example resource=endpointslices.discovery.k8s.io
+time="2024-12-26T13:40:41Z" level=info msg="Backed up 8 items out of an estimated total of 8 (estimate will change throughout the backup)" backup=velero/nginx-backup logSource="pkg/backup/backup.go:499" name=my-nginx-sj4h5 namespace=nginx-example progress= resource=endpointslices.discovery.k8s.io
+time="2024-12-26T13:40:41Z" level=info msg="Summary for skipped PVs: []" backup=velero/nginx-backup logSource="pkg/backup/backup.go:542"
+time="2024-12-26T13:40:41Z" level=info msg="Backed up a total of 8 items" backup=velero/nginx-backup logSource="pkg/backup/backup.go:546" progress=
 ```
 
 The backup created inside minio velero bucket
