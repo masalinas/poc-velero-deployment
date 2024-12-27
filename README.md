@@ -1048,6 +1048,11 @@ $ velero restore create --from-backup nginx-backup
 
 ![Velero restore object](./images/velero_restore.png "Velero restore object")
 
+- **STEP10**: remove a backup
+```
+$ velero backup delete nginx-backup
+```
+
 - **STEP10**: uninstall velero:
 By default velero will uninstalle the velero namespace controller just installed
 
